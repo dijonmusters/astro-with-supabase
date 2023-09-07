@@ -1,0 +1,86 @@
+---
+import { createClient } from "../utils/supabase/server";
+import astroLogoReference from "./astro-logo.svg";
+import supabaseLogoReference from "./supabase-logo.svg";
+
+const supabase = createClient(Astro);
+
+const {
+  data: { user },
+} = await supabase.auth.getUser();
+---
+
+<main
+  class="min-h-screen bg-neutral-900 text-neutral-100 flex flex-col items-center"
+>
+  <div class="w-full flex flex-col items-center">
+    <nav class="w-full flex justify-center border-b border-b-neutral-800 h-16">
+      <div
+        class="w-full max-w-4xl flex justify-end items-center p-3 text-sm text-neutral-100"
+      >
+        <div>
+          {
+            user ? (
+              <div class="flex items-center gap-4">
+                Hey, {user.email}!
+                <form action="/auth/sign-out" method="post">
+                  <button class="py-2 px-4 rqounded-md no-underline bg-neutral-900 hover:bg-neutral-800">
+                    Logout
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <a
+                href="/login"
+                class="py-2 px-4 rounded-md no-underline bg-neutral-900 hover:bg-neutral-800"
+              >
+                Login
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </nav>
+    <div
+      class="flex flex-col gap-14 max-w-4xl px-3 py-16 lg:py-24 text-neutral-100"
+    >
+      <div class="flex flex-col items-center mb-4 lg:mb-12">
+        <div class="flex gap-8 justify-center items-center">
+          <a href="https://supabase.com/" target="_blank">
+            <img class="h-14" src={supabaseLogoReference.src} alt="Supabase Logo" />
+          </a>
+          <span class="border-l rotate-45 h-6"></span>
+          <a href="https://astro.build" target="_blank">
+            <img class="h-16" src={astroLogoReference.src} alt="Astro Logo" />
+          </a>
+        </div>
+        <h1 class="sr-only">Supabase and Astro Starter Template</h1>
+        <p
+          class="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center my-12"
+        >
+          The fastest way to start building apps with{" "}
+          <strong>Supabase</strong> and <strong>Astro</strong>
+        </p>
+        <div
+          class="bg-neutral-100 py-3 px-6 rounded-lg font-mono text-center text-sm text-gray-900"
+        >
+          Get started by editing <strong>src/pages/index.astro</strong>
+        </div>
+      </div>
+
+      <div
+        class="w-full p-[1px] bg-gradient-to-r from-transparent via-neutral-800 to-transparent"
+      >
+      </div>
+
+      <div class="flex justify-center text-center text-xs">
+        <p>
+          Powered by{" "}
+          <a href="https://supabase.com/" target="_blank" class="font-bold">
+            Supabase
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</main>

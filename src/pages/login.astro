@@ -1,0 +1,74 @@
+---
+const error = Astro.url.searchParams.get('error');
+const message = Astro.url.searchParams.get('message');
+---
+
+<main class="min-h-screen bg-neutral-900 text-neutral-100 flex flex-col items-center">
+  <div class="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
+    <a
+      href="/"
+      class="absolute left-8 top-8 py-2 px-4 rounded-md no-underline text-neutral-100 bg-neutral-900 hover:bg-neutral-800 flex items-center group text-sm"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1"
+      >
+        <polyline points="15 18 9 12 15 6" />
+      </svg>{' '}
+      Back
+    </a>
+
+    <form
+      class="flex-1 flex flex-col w-full justify-center gap-2 text-neutral-100"
+      action="/auth/sign-in"
+      method="post"
+    >
+      <label class="text-md" for="email">
+        Email
+      </label>
+      <input
+        class="rounded-md px-4 py-2 bg-inherit border mb-6"
+        name="email"
+        placeholder="you@example.com"
+        required
+      />
+      <label class="text-md" for="password">
+        Password
+      </label>
+      <input
+        class="rounded-md px-4 py-2 bg-inherit border mb-6"
+        type="password"
+        name="password"
+        placeholder="••••••••"
+        required
+      />
+      <button class="bg-green-700 rounded px-4 py-2 text-white mb-2">
+        Sign In
+      </button>
+      <button
+        formaction="/auth/sign-up"
+        class="border border-gray-700 rounded px-4 py-2 text-white mb-2"
+      >
+        Sign Up
+      </button>
+      {error && (
+        <p class="mt-4 p-4 bg-neutral-900 text-neutral-300 text-center">
+          {error}
+        </p>
+      )}
+      {message && (
+        <p class="mt-4 p-4 bg-neutral-900 text-neutral-300 text-center">
+          {message}
+        </p>
+      )}
+    </form>
+  </div>
+</main>
