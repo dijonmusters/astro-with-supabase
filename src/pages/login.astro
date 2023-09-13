@@ -47,7 +47,7 @@ const message = Astro.url.searchParams.get('message');
         class="rounded-md px-4 py-2 bg-inherit border mb-6"
         type="password"
         name="password"
-        placeholder="••••••••"
+        placeholder="********"
         required
       />
       <button class="bg-green-700 rounded px-4 py-2 text-white mb-2">
@@ -60,12 +60,12 @@ const message = Astro.url.searchParams.get('message');
         Sign Up
       </button>
       {error && (
-        <p class="mt-4 p-4 bg-neutral-900 text-neutral-300 text-center">
+        <p class="mt-4 p-4 bg-neutral-800 text-neutral-300 text-center text-xs rounded-md">
           {error}
         </p>
       )}
       {message && (
-        <p class="mt-4 p-4 bg-neutral-900 text-neutral-300 text-center">
+        <p class="mt-4 p-4 bg-neutral-800 text-neutral-300 text-center text-xs rounded-md">
           {message}
         </p>
       )}

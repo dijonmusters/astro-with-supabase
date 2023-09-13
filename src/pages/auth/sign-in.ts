@@ -16,7 +16,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
 
   if (error) {
     return redirect(
-      `${requestUrl.origin}/login?error=Could not authenticate user`,
+      `${requestUrl.origin}/login?error=Could not authenticate user. If this is your first time, try signing up. Otherwise, check email and password are correct.`,
       301
     );
   }
