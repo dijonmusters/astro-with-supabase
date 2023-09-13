@@ -8,6 +8,8 @@ const supabase = createClient(Astro);
 const {
   data: { user },
 } = await supabase.auth.getUser();
+
+const { data: notes } = await supabase.from("notes").select();
 ---
 
 <main
@@ -47,7 +49,11 @@ const {
       <div class="flex flex-col items-center mb-4 lg:mb-12">
         <div class="flex gap-8 justify-center items-center">
           <a href="https://supabase.com/" target="_blank">
-            <img class="h-14" src={supabaseLogoReference.src} alt="Supabase Logo" />
+            <img
+              class="h-14"
+              src={supabaseLogoReference.src}
+              alt="Supabase Logo"
+            />
           </a>
           <span class="border-l rotate-45 h-6"></span>
           <a href="https://astro.build" target="_blank">
@@ -56,16 +62,93 @@ const {
         </div>
         <h1 class="sr-only">Supabase and Astro Starter Template</h1>
         <p
-          class="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center my-12"
+          class="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center mt-16 mb-20"
         >
           The fastest way to start building apps with{" "}
           <strong>Supabase</strong> and <strong>Astro</strong>
         </p>
-        <div
-          class="bg-neutral-100 py-3 px-6 rounded-lg font-mono text-center text-sm text-gray-900"
-        >
-          Get started by editing <strong>src/pages/index.astro</strong>
+        {
+          user && (
+            <form
+              action="/new-note"
+              method="post"
+              class="w-full flex flex-col gap-6 p-6 mb-16 border rounded-md border-neutral-700"
+            >
+              <textarea
+                id="message"
+                rows="4"
+                class="block p-4 w-full text-sm text-neutral-100 bg-neutral-800 rounded-md border-0 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Write your new note here..."
+                id="title"
+                name="title"
+                autofocus
+              />
+              <div class="flex items-center">
+                <input
+                  id="public"
+                  name="public"
+                  type="checkbox"
+                  value="public"
+                />
+                <label
+                  for="public"
+                  class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Make this note{" "}
+                  <span class=" bg-blue-900 rounded-md px-2 py-1">public</span>{" "}
+                  so others can see it too
+                </label>
+              </div>
+              <button class="bg-indigo-900 px-6 py-2 rounded-md self-end">
+                Add
+              </button>
+            </form>
+          )
+        }
+        <div class="w-full bg-neutral-800 rounded-md">
+          {
+            notes?.map((note) => (
+              <div class="p-8 b border-b border-neutral-700 last:border-b-0 relative justify-between items-center">
+                {note.title}
+                <span class="flex gap-2 text-xs text-neutral-300 mt-2">
+                  {user?.id === note.author_id && (
+                    <span class=" bg-teal-900 rounded-md px-2 py-1">
+                      Author
+                    </span>
+                  )}
+                  {note.is_public && (
+                    <span class=" bg-blue-900 rounded-md px-2 py-1">
+                      Public
+                    </span>
+                  )}
+                </span>
+              </div>
+            ))
+          }
         </div>
+        {
+          user ? (
+            <p class="mt-4 self-start text-xs text-neutral-400">
+              You are authenticated so you can see your notes as well as those
+              that are{" "}
+              <span class=" bg-blue-900 rounded-md px-2 py-1 inline-flex text-neutral-300 text-xs">
+                Public
+              </span>
+            </p>
+          ) : (
+            <p class="mt-4 self-start text-xs text-neutral-400">
+              You are not authenticated so can only see{" "}
+              <span class="bg-blue-900 rounded-md px-2 py-1 inline-flex text-neutral-300 text-xs">
+                Public
+              </span>{" "}
+              notes.{" "}
+              <a class="font-bold" href="/login">
+                Login
+              </a>{" "}
+              to write your own notes.
+            </p>
+          )
+        }
       </div>
 
       <div
